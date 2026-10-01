@@ -1,0 +1,38 @@
+# Unreal generated output
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Build/Windows/FileOpenOrder/
+Build/Linux/FileOpenOrder/
+
+# Local IDE files
+.vs/
+.idea/
+.vscode/
+*.sln
+*.suo
+*.VC.db
+*.VC.opendb
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.code-workspace
+*.xcodeproj/
+*.xcworkspace/
+
+# Local credentials and configuration
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.key
+*.pem
+
+# Local packages and logs
+Dist/
+Releases/
+*.log
+.DS_Store
+Thumbs.db
