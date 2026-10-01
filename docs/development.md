@@ -20,7 +20,7 @@ Engine installation requires the contributor's Epic account and license agreemen
 
 ## First implementation task
 
-Create a C++ project named `WhatRemains` in the repository root. Prefer a minimal project with project-owned placeholder geometry, then add a first-person character and an urban test space. Keep the initial code module small.
+Create a C++ project named `WhatRemains` in the repository root. Prefer a minimal project with project-owned placeholder geometry, then add a first-person character and a small seeded layout with adjacent urban map sections. Keep the initial code module small. Read the [generation design](world-generation.md) before choosing runtime streaming and content ownership.
 
 Record the exact engine and compiler versions here. Add project-specific build and launch commands once they have been run successfully.
 
@@ -28,8 +28,10 @@ Completion criteria:
 
 - A fresh checkout opens and compiles with the documented tools.
 - The player can move around the test space and interact with a supply container.
+- Adjacent sections connect and produce the same base layout and object identifiers for the same seed and generation versions, regardless of load order.
 - One AI scavenger can navigate to that container, take supplies, and return them to its stockpile.
 - The player and scavenger use the same item-transfer rules; competing for the last item cannot duplicate it.
+- Save, unload, and revisit a section: the looted container and the scavenger's carried or deposited supplies keep their changed state.
 - A packaged development build launches on the development machine.
 - The README documents controls and identifies the tests actually performed.
 
@@ -39,6 +41,6 @@ The first implementation is offline. Keep gameplay rules independent of the loca
 
 Test inventory transfers, placement, damage, saving, and loading with the player and AI scavengers. Include a case where both try to collect the same item. Verify that raided stockpiles remain depleted after loading. Add automated checks for rules that can lose or duplicate progress or resources.
 
-Measure frame time and simulation time in the test district as infected and survivor counts rise. Record the hardware and test scenario. Set performance budgets from those results before expanding the map. Test persistence across streamed districts when streaming is introduced.
+Measure generation time, frame time, simulation time, and memory as travel distance and active actor counts increase. Record the hardware, world seed, generator version, and test scenario. Set budgets from those results before expanding generation. Test persistence and AI navigation across section boundaries from the first streaming prototype.
 
 Useful references: [networking overview](https://dev.epicgames.com/documentation/en-us/unreal-engine/networking-overview-for-unreal-engine) and [World Partition](https://dev.epicgames.com/documentation/en-us/unreal-engine/world-partition-in-unreal-engine).

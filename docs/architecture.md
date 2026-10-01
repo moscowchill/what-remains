@@ -32,15 +32,17 @@ Infected use local sight, hearing, pursuit, attack, and death behavior. They can
 
 No language-model backend is required. A future service might suggest dialogue or bounded goals behind an optional adapter; it would still use validated gameplay actions and need request limits, timeouts, cost limits, and a local fallback.
 
-## A district that can grow into a city
+## A generated district that can grow into a city
 
-The full map target is a large city. Begin with one dense authored district and plan the map around [World Partition](https://dev.epicgames.com/documentation/en-us/unreal-engine/world-partition-in-unreal-engine), confirming setup against the pinned engine version before substantial content work.
+The full map target is an extensive seeded procedural city. Begin with adjacent generated map sections assembled from a small authored building kit. Use the [world-generation design](world-generation.md) for generation identity, connected boundaries, save compatibility, and the first technical checks.
 
-Streaming controls loaded regions and actors. The save system owns persistent gameplay state. Loading an actor applies its stored inventory, health, affiliation, position, and other relevant changes; removed objects must remain removed.
+Evaluate [PCG runtime generation](https://dev.epicgames.com/documentation/en-us/unreal-engine/using-pcg-generation-modes-in-unreal-engine) for procedural assembly and detail, and [World Partition](https://dev.epicgames.com/documentation/en-us/unreal-engine/world-partition-in-unreal-engine) for applicable world streaming. The project needs its own rules for generating city structure, preserving changes, and managing runtime sections. Confirm the integration in a packaged build before building substantial content.
 
-Give regions and authored persistent objects stable identifiers. Generate identifiers for newly created structures and pickups. References must survive actor unloading and changes in load order.
+Streaming controls loaded regions and actors. Generation recreates a versioned base layout; the save system applies persistent changes before gameplay begins. Loading restores inventory, health, affiliation, position, and other changes. Removed objects stay removed, and moved actors resolve to a single current location.
 
-Keep the initial scavenging routes and outpost within the playable district. Budget active AI, navigation work, loaded content, and update frequency. Measure loaded-region and actor costs before introducing complicated distant simulation.
+Identify generated objects using the world, generator version, region coordinates, and stable feature keys. Allocate separate persistent identifiers for new structures and pickups. References must survive unloading, regeneration, and changes in load order.
+
+Keep initial scavenging routes and the outpost within the active test district. Budget generation work, collision and navigation updates, active AI, and loaded content. Scavenger goals must not trigger an uncontrolled chain of distant region loads. Measure costs before expanding simulation.
 
 Outside loaded regions, preserve world records without running full character simulation. The first prototype may pause those actors explicitly. Save their carried resources and state before unloading so returning does not reset the competition.
 
@@ -48,7 +50,9 @@ Approximate offscreen scavenging or settlement activity can follow a proven dist
 
 ## Persistence and recovery
 
-Use a versioned save format with a world identifier, content version, player record, settlement records, and stable identifiers for persistent objects. Store inventories, stockpiles, barricades, looted containers, survivor state, and changes to infected spawns.
+Use a versioned save format with a world identifier, world seed, generator and content-kit versions, player record, settlement records, and stable identifiers for persistent objects. Store changes to generated containers and spawns, plus inventories, stockpiles, barricades, and survivor state.
+
+Pin each saved world's generation rules and compatible content. A generator update needs a defined migration or a new-world choice before changing existing worlds. Recreating a base layout must preserve the meaning of saved object identifiers and player construction.
 
 Store definition keys and gameplay data rather than raw object pointers. Capture both loaded actors and persistent records for unloaded regions so a save includes the city's changed state.
 
@@ -64,7 +68,7 @@ Define autosave timing, shutdown saves, death inventory transfers, and recovery 
 
 Future human players should enter the same competition for resources, potentially operating separate settlements. Preserve the boundaries between action requests, authoritative state, controller decisions, and presentation to support that work.
 
-Networking remains a later implementation: move authoritative ownership to a server, validate remote requests, replicate state, and design prediction, session identity, joining, reconnecting, and save ownership. These boundaries reduce coupling but do not guarantee a conversion without significant changes and testing.
+Networking remains a later implementation: move authoritative ownership to a server, validate remote requests, replicate state, and design prediction, session identity, joining, reconnecting, and save ownership. Clients must agree on world seed and generation versions, with shared gameplay state controlled by the server. These boundaries reduce coupling but do not guarantee a conversion without significant changes and testing.
 
 Choose hosting, authentication, population targets, and settlement permissions before that milestone. Players spread across the city will increase simulation and streaming demands and require new performance measurements.
 
@@ -83,6 +87,8 @@ The code license does not automatically cover third-party art, audio, fonts, or 
 - Raid the outpost and verify that the stockpile loses exactly what the player takes.
 - Restart from a save and compare inventories, stockpiles, cleared objects, survivor state, and barricades.
 - Unload and reload a region and verify that its changed state and carried supplies persist.
+- Generate neighboring sections in different orders and compare base layouts and identities; cross their boundaries with both the player and AI.
+- Check several fixed seeds for reachable starting supplies and an outpost, then measure generation time and memory across repeated travel.
 - Test interrupted saves, corrupt latest saves, backup recovery, and unsupported save versions.
 - Profile the district with recorded hardware, loaded regions, and active survivor and infected counts.
 

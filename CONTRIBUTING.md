@@ -17,6 +17,7 @@ Until a runnable project exists, documentation reviews and help validating the d
 - Put core rules in C++ and expose useful tuning controls to Blueprints.
 - Keep item and construction definitions separate from their runtime state.
 - Give persisted objects stable identifiers and version changes to save data.
+- For generation changes, record world seeds and generator versions. Check neighboring sections in different load orders, navigation across their boundaries, and saved changes after a revisit.
 - Use Git LFS for Unreal assets and large binary source files. Install and initialize it before adding those files.
 - Record asset origin, license, source redistribution rights, and attribution in [ASSETS.md](ASSETS.md).
 - Coordinate edits to binary assets to reduce conflicts. Keep changes to unrelated maps and assets out of a contribution.

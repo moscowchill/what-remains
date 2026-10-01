@@ -4,19 +4,23 @@ Status: proposed direction. This repository currently contains documentation, wi
 
 ## The game we want to make
 
-A first-person survival game set in a large, realistic city after a zombie outbreak. The player builds a base, searches abandoned places, fights or avoids infected, and competes with other survivors for scarce supplies. Unreal Engine is the selected engine.
+A first-person survival game set in a vast, realistically rendered procedural city after a zombie outbreak. The player builds a base, searches abandoned places, fights or avoids infected, and competes with other survivors for scarce local supplies. Unreal Engine is the selected engine.
 
 The full game should support multiple settlements competing for the city's resources. AI survivors will populate that competition first. Human players and their settlements can join this same kind of struggle in a later multiplayer version.
+
+A world seed generates more districts as the player explores, aiming for the feeling of a world that keeps going. Assemble city layouts from designed streets, buildings, interiors, and landmarks. District character and landmark placement should make exploration varied and navigable. Technical travel limits will be measured as the generator develops.
+
+Resources remain finite at each location. Exploring farther can uncover fresh supplies; travel time, carrying capacity, and danger should make nearby contested resources and rival stockpiles valuable. Returning to a district preserves its depleted supplies and the player's construction.
 
 The world, characters, locations, and story will be original. Survival fiction and games can inform the atmosphere; this project does not adopt characters, settings, or specific lore from D. J. Molles or Fallout.
 
 ## First playable: one contested city district
 
-Build an offline solo version in one dense urban district that can become part of the larger city. Include a player shelter, several accessible scavenging locations, infected, rival AI scavengers, and one defended survivor outpost with a stockpile.
+Build an offline solo version in one small generated urban district spanning several adjacent map sections. Include a player shelter, several accessible scavenging locations, infected, rival AI scavengers, and one defended survivor outpost with a stockpile. Use fixed test seeds while developing the generator.
 
 Rival survivors are part of the first playable. They should collect actual supplies from the same finite containers available to the player and carry those supplies home. Raiding their stockpile gives the player another way to obtain resources that rivals have collected.
 
-Use placeholder geometry and clearly licensed assets while this interaction takes shape. The district should demonstrate useful urban spaces: streets, interiors, narrow approaches, and routes between the shelter, supply sites, and outpost. The larger city remains the intended world.
+Use placeholder geometry and clearly licensed assets while this interaction takes shape. The district should demonstrate useful urban spaces: streets, interiors, narrow approaches, and routes between the shelter, supply sites, and outpost. Its streets and AI routes must connect across generated section boundaries. The larger procedural city remains the intended world.
 
 A supply run should take roughly 10-15 minutes:
 
@@ -32,6 +36,7 @@ A supply run should take roughly 10-15 minutes:
 
 | Area | First playable behavior |
 | --- | --- |
+| World generation | A seed creates connected map sections with a reachable shelter, supplies, and rival outpost. |
 | Movement | First-person walking, sprinting, looking, and interaction with reliable collision. |
 | Combat | One firearm, finite ammunition, reload, hit feedback, health, and a simple death rule. |
 | Infected | One type that sees and hears survivors, pursues, attacks, and can die. |
@@ -65,23 +70,26 @@ The first milestone is complete when these checks can be demonstrated in the sam
 - Death creates one recoverable inventory, with no duplicate items after saving and reloading.
 - A save and restart preserve depleted containers, rival carried supplies, both stockpiles, deaths, and barricades.
 - Unloading and reloading a district region preserves its changed resources and occupants.
+- The same seed and generation versions produce the same base layout when neighboring sections load in different orders.
+- The player and AI cross generated boundaries with connected streets, collision, and navigation.
+- Several fixed seeds produce reachable supplies and an outpost; repeated travel keeps active content within a measured budget.
 
 Record hardware, engine version, loaded area, active survivor and infected counts, and frame times. Set a performance target once the intended hardware is known.
 
 ## Order of work
 
-1. Establish the Unreal project and a small urban test area with a shelter and rival outpost.
+1. Establish the Unreal project and a small seeded urban layout. Prove connected sections, stable object identities, and basic save-and-revisit behavior before expanding the generator.
 2. Implement shared inventory and interaction rules; prove that an AI scavenger competes for supplies and brings them home.
 3. Add first-person combat, infected, and basic survivor combat around the supply route.
 4. Add stockpile raiding and the barricade, including navigation and attack behavior.
 5. Complete persistent world changes, recovery checks, and the full offline supply run.
-6. Improve atmosphere and measured performance, then expand the district toward the larger city.
+6. Improve atmosphere and measured performance, then grow the building kit and district variety while testing longer exploration.
 
 Multiplayer follows a proven solo version. More settlements, broader city simulation, vehicles, elaborate crafting, and external AI services should follow evidence from the playable district. Local survivor AI is required now; distant simulation and language-model-driven residents can come later.
 
 ## Decisions still needed
 
-- What city layout and setting should give the game its identity?
+- What city setting, district types, and landmark styles should give the generated world its identity?
 - Should infected create slow pressure, fast pursuit, or a mix?
 - How aggressive and capable should rival survivors be in the first district?
 - How demanding should survival be, and how much progress should death put at risk?
